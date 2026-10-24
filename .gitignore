@@ -1,0 +1,12 @@
+build/
+成品/
+dist/
+.venv/
+__pycache__/
+*.pdb
+*.obj
+*.exe
+*.log
+.env*
+*.pfx
+*.pem

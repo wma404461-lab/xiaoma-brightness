@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <title>小马亮度 — 马、屏幕与阳光</title>
+  <defs>
+    <linearGradient id="tile" x1="62" y1="32" x2="454" y2="506" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#233E4E"/><stop offset="1" stop-color="#10232F"/>
+    </linearGradient>
+    <linearGradient id="screen" x1="102" y1="194" x2="398" y2="370" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#268F91"/><stop offset="1" stop-color="#15596A"/>
+    </linearGradient>
+    <linearGradient id="rim" x1="94" y1="154" x2="404" y2="386" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#D4F3E9"/><stop offset="1" stop-color="#83BFC0"/>
+    </linearGradient>
+    <linearGradient id="horse-coat" x1="173" y1="190" x2="281" y2="352" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFFF"/><stop offset="1" stop-color="#E3EEE9"/>
+    </linearGradient>
+    <linearGradient id="sun" x1="336" y1="214" x2="368" y2="258" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFE8A0"/><stop offset="1" stop-color="#F6B955"/>
+    </linearGradient>
+  </defs>
+  <rect id="background" x="16" y="16" width="480" height="480" rx="112" fill="url(#tile)"/>
+  <rect x="17" y="17" width="478" height="478" rx="111" fill="none" stroke="#FFFFFF" stroke-opacity=".09" stroke-width="2"/>
+  <g id="monitors">
+    <rect id="rear-monitor" x="126" y="124" width="306" height="220" rx="31" fill="#152D3B" stroke="#4F7B87" stroke-width="12"/>
+    <path d="M164 125H394Q426 125 426 157" fill="none" stroke="#7EACA9" stroke-width="6" stroke-linecap="round"/>
+    <path d="M233 372H277V411H233Z" fill="#84B4B8"/>
+    <path id="monitor-foot" d="M201 412Q202 402 213 402H297Q308 402 309 412L312 420H198Z" fill="url(#rim)"/>
+    <rect x="76" y="160" width="344" height="232" rx="30" fill="#091A24" fill-opacity=".4" transform="translate(0 8)"/>
+    <rect id="front-monitor" x="76" y="156" width="344" height="232" rx="30" fill="url(#rim)"/>
+    <rect id="display" x="92" y="172" width="312" height="196" rx="16" fill="url(#screen)"/>
+    <path d="M107 173H389Q403 173 403 187" fill="none" stroke="#FFFFFF" stroke-opacity=".12" stroke-width="2"/>
+  </g>
+  <g id="horse-portrait">
+    <path id="mane" d="M150 352H129C136 337 139 324 137 307C135 284 149 271 157 260C167 247 172 228 175 211L181 220C181 244 176 261 165 282C153 303 151 326 150 352Z" fill="#B6DAD0"/>
+    <path id="horse" d="M149 352C153 322 145 299 159 275C166 262 173 247 176 230C165 218 168 204 179 195L187 176L208 202L221 185C234 190 241 202 241 214C258 220 271 236 282 246L310 262C323 268 325 279 315 286L296 298C285 305 273 298 260 282C255 311 268 333 286 352Z" fill="url(#horse-coat)"/>
+    <path id="ear-detail" d="M185 195L188 187L199 203Z" fill="#A6C7BE"/>
+    <path id="cheek" d="M258 277C262 265 267 260 276 258C269 274 271 285 280 291C273 288 265 282 258 277Z" fill="#BAD9D2"/>
+    <path id="mane-detail" d="M166 273C179 252 184 232 183 216" fill="none" stroke="#2B7B80" stroke-width="5" stroke-linecap="round"/>
+    <ellipse id="eye" cx="260" cy="244" rx="5" ry="4" fill="#183942" transform="rotate(20 260 244)"/>
+    <ellipse id="nostril" cx="307" cy="278" rx="3.5" ry="2.5" fill="#5C8785"/>
+  </g>
+  <g id="brightness">
+    <path id="sun-rays" d="M355 203V195M355 277V285M320 239H312M390 239H398M330 214L324 208M380 264L386 270M330 264L324 270M380 214L386 208" fill="none" stroke="#FFD68B" stroke-width="6" stroke-linecap="round"/>
+    <circle id="sun-disc" cx="355" cy="239" r="23" fill="url(#sun)"/>
+  </g>
+</svg>

@@ -1,0 +1,30 @@
+#include <windows.h>
+// Generated from app-icon.svg and tray-mark.svg: app, white tray, black tray.
+1 ICON "app.ico"
+2 ICON "tray-dark.ico"
+3 ICON "tray-light.ico"
+1 RT_MANIFEST "app.manifest"
+1 VERSIONINFO
+FILEVERSION 1,1,6,0
+PRODUCTVERSION 1,1,6,0
+FILEOS VOS_NT_WINDOWS32
+FILETYPE VFT_APP
+BEGIN
+  BLOCK "StringFileInfo"
+  BEGIN
+    BLOCK "080404B0"
+    BEGIN
+      VALUE "CompanyName", "小马软件\0"
+      VALUE "FileDescription", "小马亮度 · 轻巧的屏幕亮度控制\0"
+      VALUE "FileVersion", "1.1.6\0"
+      VALUE "InternalName", "XiaomaBrightness\0"
+      VALUE "OriginalFilename", "小马亮度.exe\0"
+      VALUE "ProductName", "小马亮度\0"
+      VALUE "ProductVersion", "1.1.6\0"
+    END
+  END
+  BLOCK "VarFileInfo"
+  BEGIN
+    VALUE "Translation", 0x0804, 1200
+  END
+END

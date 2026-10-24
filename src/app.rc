@@ -14,12 +14,12 @@ BEGIN
   BEGIN
     BLOCK "080404B0"
     BEGIN
-      VALUE "CompanyName", "小马软件\0"
-      VALUE "FileDescription", "小马亮度 · 轻巧的屏幕亮度控制\0"
+      VALUE "CompanyName", "Xiaoma Software\0"
+      VALUE "FileDescription", "Xiaoma Brightness · Lightweight display brightness control\0"
       VALUE "FileVersion", "1.1.6\0"
       VALUE "InternalName", "XiaomaBrightness\0"
-      VALUE "OriginalFilename", "小马亮度.exe\0"
-      VALUE "ProductName", "小马亮度\0"
+      VALUE "OriginalFilename", "Xiaoma Brightness.exe\0"
+      VALUE "ProductName", "Xiaoma Brightness\0"
       VALUE "ProductVersion", "1.1.6\0"
     END
   END

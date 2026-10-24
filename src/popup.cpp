@@ -106,7 +106,7 @@ bool DrawingReady() {
     if(!writeFactory&&FAILED(DWriteCreateFactory(DWRITE_FACTORY_TYPE_SHARED,__uuidof(IDWriteFactory),reinterpret_cast<IUnknown**>(&writeFactory))))return false;
     auto createFont=[](IDWriteTextFormat*& font,float size,DWRITE_FONT_WEIGHT weight){
         if(font)return;
-        if(SUCCEEDED(writeFactory->CreateTextFormat(L"Microsoft YaHei UI",nullptr,weight,DWRITE_FONT_STYLE_NORMAL,DWRITE_FONT_STRETCH_NORMAL,size,L"zh-CN",&font))){font->SetWordWrapping(DWRITE_WORD_WRAPPING_NO_WRAP);font->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_CENTER);}
+        if(SUCCEEDED(writeFactory->CreateTextFormat(L"Segoe UI",nullptr,weight,DWRITE_FONT_STYLE_NORMAL,DWRITE_FONT_STRETCH_NORMAL,size,L"en-US",&font))){font->SetWordWrapping(DWRITE_WORD_WRAPPING_NO_WRAP);font->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_CENTER);}
     };
     createFont(titleFont,14,DWRITE_FONT_WEIGHT_SEMI_BOLD);createFont(smallFont,10,DWRITE_FONT_WEIGHT_NORMAL);createFont(valueFont,25,DWRITE_FONT_WEIGHT_SEMI_BOLD);
     if(!titleFont||!smallFont||!valueFont)return false;
@@ -125,20 +125,20 @@ void Circle(float x,float y,float radius,UINT32 color,bool outline=false,float s
 void Round(float x,float y,float width,float height,float radius,UINT32 color,bool outline=false){Color(color);auto r=D2D1::RoundedRect(D2D1::RectF(x,y,x+width,y+height),radius,radius);if(outline)target->DrawRoundedRectangle(r,brush,1);else target->FillRoundedRectangle(r,brush);}
 void Text(const std::wstring& text,IDWriteTextFormat* font,float x,float y,float width,float height,UINT32 color,DWRITE_TEXT_ALIGNMENT align=DWRITE_TEXT_ALIGNMENT_LEADING){font->SetTextAlignment(align);Color(color);target->DrawText(text.c_str(),static_cast<UINT>(text.size()),font,D2D1::RectF(x,y,x+width,y+height),brush,D2D1_DRAW_TEXT_OPTIONS_CLIP);}
 std::wstring Status() {
-    if(overlayFailed)return L"暂时无法调节，请重试";
-    if(scanning)return L"正在连接显示器…";
-    if(displays.empty())return L"正在等待显示器连接";
+    if(overlayFailed)return L"Unable to adjust. Try again.";
+    if(scanning)return L"Connecting displays…";
+    if(displays.empty())return L"Waiting for a display";
     bool error=false,pending=false,soft=false;
     for(const auto& channel:channels){auto state=channel->Snapshot();error=error||state.error!=0;pending=pending||state.requested!=state.completed;soft=soft||state.software;}
-    if(error)return L"正在重新同步屏幕…";
-    if(pending)return L"正在同步所有屏幕…";
-    std::wstring count=displays.size()==2?L"两块屏幕":(displays.size()==1?L"屏幕":std::to_wstring(displays.size())+L" 块屏幕");
-    return count+(soft?L"统一调节 · 含画面调暗":L"亮度已锁定同步");
+    if(error)return L"Resyncing displays…";
+    if(pending)return L"Syncing all displays…";
+    std::wstring count=displays.size()==2?L"2 displays":(displays.size()==1?L"Display":std::to_wstring(displays.size())+L" displays");
+    return count+(soft?L" - linked · with dimming":L" - brightness linked");
 }
 void DrawFrame(){
     target->BeginDraw();target->SetTransform(D2D1::Matrix3x2F::Identity());target->Clear(D2D1::ColorF(0x171f26));
     Round(0.5f,0.5f,Width-1,Height-1,13,0x35424b,true);
-    Text(L"小马亮度",titleFont,49,15,190,27,0xe4edf2);
+    Text(L"Xiaoma Brightness",titleFont,49,15,190,27,0xe4edf2);
     Text(std::to_wstring(value),valueFont,245,10,64,36,0xf2faf6,DWRITE_TEXT_ALIGNMENT_TRAILING);Text(L"%",smallFont,313,25,17,19,0x899fa9);
     Text(Status(),smallFont,23,45,304,18,0x81949f);
     const float thumb=TrackLeft+(TrackRight-TrackLeft)*visual/100;
@@ -151,8 +151,8 @@ void DrawFrame(){
 void PaintFallback(HDC dc){
     RECT bounds{};GetClientRect(window,&bounds);HBRUSH background=CreateSolidBrush(RGB(23,31,38));FillRect(dc,&bounds,background);DeleteObject(background);
     SetBkMode(dc,TRANSPARENT);SetTextColor(dc,RGB(240,244,245));
-    HFONT font=CreateFontW(-Pixel(14),0,0,0,FW_NORMAL,FALSE,FALSE,FALSE,DEFAULT_CHARSET,0,0,CLEARTYPE_QUALITY,0,L"Microsoft YaHei UI");
-    HGDIOBJ previous=SelectObject(dc,font);RECT name{Pixel(49),Pixel(15),Pixel(235),Pixel(44)};DrawTextW(dc,L"小马亮度",-1,&name,DT_SINGLELINE|DT_VCENTER);
+    HFONT font=CreateFontW(-Pixel(14),0,0,0,FW_NORMAL,FALSE,FALSE,FALSE,DEFAULT_CHARSET,0,0,CLEARTYPE_QUALITY,0,L"Segoe UI");
+    HGDIOBJ previous=SelectObject(dc,font);RECT name{Pixel(49),Pixel(15),Pixel(235),Pixel(44)};DrawTextW(dc,L"Xiaoma Brightness",-1,&name,DT_SINGLELINE|DT_VCENTER);
     std::wstring text=std::to_wstring(value)+L"%";RECT number{Pixel(245),Pixel(15),Pixel(325),Pixel(44)};DrawTextW(dc,text.c_str(),-1,&number,DT_RIGHT|DT_SINGLELINE|DT_VCENTER);
     text=Status();RECT status{Pixel(22),Pixel(45),Pixel(325),Pixel(65)};DrawTextW(dc,text.c_str(),-1,&status,DT_SINGLELINE|DT_VCENTER);
     const int x=Pixel(TrackLeft+(TrackRight-TrackLeft)*value/100.0f),y=Pixel(TrackY);
@@ -187,7 +187,7 @@ void UpdateOverlays(){
         if(value>=100){if(found!=overlays.end())ShowWindow(found->second.window,SW_HIDE);continue;}
         if(found==overlays.end()){
             const RECT& r=region.second;Overlay overlay;overlay.bounds=r;
-            overlay.window=CreateWindowExW(WS_EX_LAYERED|WS_EX_TRANSPARENT|WS_EX_TOPMOST|WS_EX_TOOLWINDOW|WS_EX_NOACTIVATE,L"XiaomaBrightness.Soft",L"小马亮度柔光",WS_POPUP,r.left,r.top,r.right-r.left,r.bottom-r.top,nullptr,nullptr,instance,nullptr);
+            overlay.window=CreateWindowExW(WS_EX_LAYERED|WS_EX_TRANSPARENT|WS_EX_TOPMOST|WS_EX_TOOLWINDOW|WS_EX_NOACTIVATE,L"XiaomaBrightness.Soft",L"Xiaoma Brightness Dimmer",WS_POPUP,r.left,r.top,r.right-r.left,r.bottom-r.top,nullptr,nullptr,instance,nullptr);
             if(!overlay.window){overlayFailed=true;continue;}
             BrightnessCapture::ExcludeSoftOverlay(overlay.window);
             found=overlays.emplace(region.first,overlay).first;
@@ -204,8 +204,8 @@ void UpdateOverlays(){
     if(IsWindowVisible(window)&&!regions.empty())SetWindowPos(window,HWND_TOPMOST,0,0,0,0,SWP_NOMOVE|SWP_NOSIZE|SWP_NOACTIVATE);
 }
 void UpdateTrayTip(){
-    std::wstring tip=L"小马亮度 · "+std::to_wstring(value)+L"%";
-    for(size_t i=0;i<displays.size();++i){auto state=channels[i]->Snapshot();tip+=L"\n"+displays[i]->name+(state.software?L" · 画面调暗":L" · 硬件亮度");if(state.error)tip+=L" · 重试中";}
+    std::wstring tip=L"Xiaoma Brightness · "+std::to_wstring(value)+L"%";
+    for(size_t i=0;i<displays.size();++i){auto state=channels[i]->Snapshot();tip+=L"\n"+displays[i]->name+(state.software?L" · Software dimming":L" · Hardware brightness");if(state.error)tip+=L" · Retrying";}
     tray.Tip(tip.c_str());tray.Sync(GetTickCount64());
 }
 HICON LoadTrayIcon(){
@@ -353,7 +353,7 @@ void OnDiscovered(Displays* message){
     SetBrightness(value,true,true);UpdateTrayTip();Repaint();
 }
 void TrayMenu(){
-    HMENU menu=CreatePopupMenu();AppendMenuW(menu,MF_STRING,1,L"显示亮度条");
+    HMENU menu=CreatePopupMenu();AppendMenuW(menu,MF_STRING,1,L"Show brightness slider");
     POINT point{};GetCursorPos(&point);SetForegroundWindow(window);UINT command=TrackPopupMenu(menu,TPM_RETURNCMD|TPM_RIGHTBUTTON,point.x,point.y,0,window,nullptr);DestroyMenu(menu);PostMessageW(window,WM_NULL,0,0);
     if(command==1)OpenPanel();
 }
@@ -540,7 +540,7 @@ int WINAPI wWinMain(HINSTANCE app,HINSTANCE,LPWSTR,int){
     WNDCLASSEXW cls{};cls.cbSize=sizeof(cls);cls.hInstance=instance;cls.lpfnWndProc=WindowProc;cls.lpszClassName=ClassName;cls.hIcon=icon;cls.hIconSm=icon;cls.hCursor=LoadCursorW(nullptr,IDC_ARROW);cls.style=CS_DROPSHADOW;RegisterClassExW(&cls);
     WNDCLASSEXW soft{};soft.cbSize=sizeof(soft);soft.hInstance=instance;soft.lpfnWndProc=OverlayProc;soft.lpszClassName=L"XiaomaBrightness.Soft";soft.hbrBackground=static_cast<HBRUSH>(GetStockObject(BLACK_BRUSH));RegisterClassExW(&soft);
     taskbarCreated=RegisterWindowMessageW(L"TaskbarCreated");UINT dpi=Platform::WindowDpi(nullptr);dpiScale=dpi?dpi/96.0f:1;
-    window=CreateWindowExW(WS_EX_TOPMOST|WS_EX_CONTROLPARENT|(inspect?WS_EX_APPWINDOW:WS_EX_TOOLWINDOW),ClassName,L"小马亮度",WS_POPUP,0,0,Pixel(Width),Pixel(Height),nullptr,nullptr,instance,nullptr);
+    window=CreateWindowExW(WS_EX_TOPMOST|WS_EX_CONTROLPARENT|(inspect?WS_EX_APPWINDOW:WS_EX_TOOLWINDOW),ClassName,L"Xiaoma Brightness",WS_POPUP,0,0,Pixel(Width),Pixel(Height),nullptr,nullptr,instance,nullptr);
     if(!window){if(mutex)CloseHandle(mutex);return 1;}
     DEV_BROADCAST_DEVICEINTERFACE_W filter{};filter.dbcc_size=sizeof(filter);filter.dbcc_devicetype=DBT_DEVTYP_DEVICEINTERFACE;filter.dbcc_classguid=GUID_DEVINTERFACE_MONITOR;
     monitorNotification=RegisterDeviceNotificationW(window,&filter,DEVICE_NOTIFY_WINDOW_HANDLE);
@@ -548,7 +548,7 @@ int WINAPI wWinMain(HINSTANCE app,HINSTANCE,LPWSTR,int){
     SetTimer(window,ConnectionTimer,500,nullptr);
     dpiScale=Platform::WindowDpi(window)/96.0f;
     DWORD dark=TRUE;DwmSetWindowAttribute(window,20,&dark,sizeof(dark));DWORD corner=2;DwmSetWindowAttribute(window,33,&corner,sizeof(corner));COLORREF border=RGB(53,66,75);DwmSetWindowAttribute(window,34,&border,sizeof(border));
-    slider=CreateWindowExW(WS_EX_TRANSPARENT,TRACKBAR_CLASSW,L"所有显示器的亮度",WS_CHILD|WS_VISIBLE|WS_TABSTOP|TBS_NOTICKS|TBS_FIXEDLENGTH,0,0,1,1,window,reinterpret_cast<HMENU>(1000),instance,nullptr);
+    slider=CreateWindowExW(WS_EX_TRANSPARENT,TRACKBAR_CLASSW,L"Brightness for all displays",WS_CHILD|WS_VISIBLE|WS_TABSTOP|TBS_NOTICKS|TBS_FIXEDLENGTH,0,0,1,1,window,reinterpret_cast<HMENU>(1000),instance,nullptr);
     SendMessageW(slider,TBM_SETRANGE,FALSE,MAKELPARAM(0,100));SendMessageW(slider,TBM_SETPOS,FALSE,value);SendMessageW(slider,TBM_SETLINESIZE,0,1);SendMessageW(slider,TBM_SETPAGESIZE,0,10);SetWindowSubclass(slider,SliderProc,1,0);EnableWindow(slider,TRUE);
     InstallTray();wake=CreateEventW(nullptr,FALSE,TRUE,nullptr);worker=CreateThread(nullptr,0,WorkerProc,nullptr,0,nullptr);
     if(!startHidden)OpenPanel();

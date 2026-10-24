@@ -1,5 +1,5 @@
 build/
-成品/
+dist/
 dist/
 .venv/
 __pycache__/

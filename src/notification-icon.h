@@ -23,7 +23,7 @@ public:
     void Initialize(HWND window,UINT callback,HICON icon,const GUID& identity){
         data_={};data_.cbSize=sizeof(data_);data_.hWnd=window;data_.uID=1;
         data_.uCallbackMessage=callback;data_.hIcon=icon;data_.guidItem=identity;
-        wcscpy_s(data_.szTip,L"小马亮度");enabled_=true;installed_=versioned_=false;due_=0;
+        wcscpy_s(data_.szTip,L"Xiaoma Brightness");enabled_=true;installed_=versioned_=false;due_=0;
     }
     void Icon(HICON icon){data_.hIcon=icon;}
     void Tip(const wchar_t* tip){wcsncpy_s(data_.szTip,tip,_TRUNCATE);}

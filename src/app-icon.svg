@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
-  <title>小马亮度 — 马、屏幕与阳光</title>
+  <title>Xiaoma Brightness — Horse, display and sunlight</title>
   <defs>
     <linearGradient id="tile" x1="62" y1="32" x2="454" y2="506" gradientUnits="userSpaceOnUse">
       <stop stop-color="#233E4E"/><stop offset="1" stop-color="#10232F"/>

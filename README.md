@@ -1,50 +1,48 @@
-# 小马亮度 · Xiaoma Brightness
+# Xiaoma Brightness
 
-A small native Windows tray utility for adjusting multiple monitors with one slider.
+A lightweight native Windows tray utility that adjusts multiple displays with one slider. Drag the slider or use the mouse wheel for fine control.
 
-Windows 原生多显示器亮度工具：点击托盘图标展开滑块，支持拖动与滚轮微调。
+## Features
 
-## 功能与边界
+- Hardware backlight control where the monitor and driver support it.
+- Software dimming when hardware control is unavailable or fails.
+- Remembers brightness and processes updates separately for each display.
+- Starts silently at sign-in for the current user after its first normal launch; administrator access is not required.
+- Windows 10/11, with x86 as the default build and an optional x64 target. ARM emulation has not been verified.
 
-- 支持硬件背光控制；不支持或控制失败的显示器使用画面调暗作为回退。
-- 记住上次亮度，按显示器处理更新请求。
-- 首次正常运行会登记当前用户的开机启动项；无需管理员权限。
-- 支持 Windows 10/11，默认构建 x86，也可构建 x64。ARM 仿真未在本次开源准备中验证。
-- 实际硬件响应取决于显示器及驱动，不能保证所有屏幕支持硬件调光。
+Hardware dimming depends on the display and driver. It is not supported by every screen.
 
-## 构建
+## Build
 
-需要 Visual Studio C++ Build Tools 与 Windows SDK。
+Install Visual Studio C++ Build Tools and the Windows SDK.
 
 ```powershell
 .\build.ps1
 .\build.ps1 -Arch x64 -OutputDirectory .\dist
 ```
 
-图标已包含。若需重生成图标，需要 Python、Pillow 与 resvg-py：
+Icons are included. To regenerate them, install Python, Pillow and resvg-py:
 
 ```powershell
 python -m pip install Pillow resvg-py
 .\build.ps1 -RegenerateIcons
 ```
 
-没有签名证书也可构建；可选签名参数由使用者自行提供，不包含作者证书。
+Code signing is optional. Supply your own certificate when using the signing arguments; this repository contains no signing keys.
 
-## 验证
+## Regression checks
 
 ```powershell
 .\scripts\test-tray-toggle.ps1
 .\scripts\test-notification-icon.ps1
 ```
 
-以上是托盘逻辑与通知图标身份的回归检查，不代表所有显示器兼容性验证。运行主程序会改变屏幕亮度并登记自启动；请在需要使用该工具时再启动。
+These check tray behavior and notification-icon identity, not compatibility with every monitor. Starting the normal application changes screen brightness and registers its startup entry; run it when you intend to use those features.
 
-## 项目结构
+## Source layout and licensing
 
-`src/` 为 C++ 与自制图标资源，`scripts/` 为图标生成和局部回归检查，`build.ps1` 为构建入口。
+`src/` contains the C++ application and its icon resources. `scripts/` contains icon generation and focused regression checks. `build.ps1` is the build entry point.
 
-这是已有自制软件的首次公开源码整理。历史本机测试不等于社区使用量；欢迎报告可复现问题并附系统及显示器型号，不要提交个人信息或密钥。
+The application source is MIT licensed. Windows SDK, Visual Studio, Python, Pillow and resvg-py retain their respective licenses and are not bundled. No personal settings, server credentials, private keys, installers or user data are included.
 
-## 许可证与依赖
-
-本项目代码按 MIT 许可证发布。Windows SDK、Visual Studio、Python、Pillow、resvg-py 分别适用其自身许可证；不随仓库分发这些工具。仓库不包含个人运行配置、服务器连接资料、私钥、安装包或用户数据。
+This is the public source edition of an existing personal tool. Local test results are not community adoption metrics. Please report reproducible issues with your Windows version and monitor model, without personal information or secrets.

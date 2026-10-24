@@ -9,7 +9,7 @@ struct ShortcutInfo { bool readable=false;std::wstring target,arguments; };
 inline ShortcutInfo InspectShortcut(){
     ShortcutInfo result;wchar_t directory[MAX_PATH]{};
     if(FAILED(SHGetFolderPathW(nullptr,CSIDL_STARTUP,nullptr,SHGFP_TYPE_CURRENT,directory)))return result;
-    const std::wstring shortcut=std::wstring(directory)+L"\\小马亮度.lnk";
+    const std::wstring shortcut=std::wstring(directory)+L"\\Xiaoma Brightness.lnk";
     const HRESULT initialized=CoInitializeEx(nullptr,COINIT_APARTMENTTHREADED);
     if(FAILED(initialized)&&initialized!=RPC_E_CHANGED_MODE)return result;
     [&]{
@@ -25,7 +25,7 @@ inline ShortcutInfo InspectShortcut(){
 inline bool RegisterShortcut(const wchar_t* executable) {
     wchar_t directory[MAX_PATH]{};
     if(FAILED(SHGetFolderPathW(nullptr,CSIDL_STARTUP|CSIDL_FLAG_CREATE,nullptr,SHGFP_TYPE_CURRENT,directory)))return false;
-    const std::wstring shortcut=std::wstring(directory)+L"\\小马亮度.lnk";
+    const std::wstring shortcut=std::wstring(directory)+L"\\Xiaoma Brightness.lnk";
     const HRESULT initialized=CoInitializeEx(nullptr,COINIT_APARTMENTTHREADED);
     if(FAILED(initialized)&&initialized!=RPC_E_CHANGED_MODE)return false;
     bool registered=[&]{
@@ -36,7 +36,7 @@ inline bool RegisterShortcut(const wchar_t* executable) {
             wchar_t path[32768]{},arguments[32]{};
             if(SUCCEEDED(link->GetPath(path,ARRAYSIZE(path),nullptr,SLGP_RAWPATH))&&SUCCEEDED(link->GetArguments(arguments,ARRAYSIZE(arguments)))&&_wcsicmp(path,executable)==0&&wcscmp(arguments,L"--tray")==0)return true;
         }
-        if(FAILED(link->SetPath(executable))||FAILED(link->SetArguments(L"--tray"))||FAILED(link->SetShowCmd(SW_SHOWMINNOACTIVE))||FAILED(link->SetIconLocation(executable,0))||FAILED(link->SetDescription(L"小马亮度 · 登录后静默常驻托盘")))return false;
+        if(FAILED(link->SetPath(executable))||FAILED(link->SetArguments(L"--tray"))||FAILED(link->SetShowCmd(SW_SHOWMINNOACTIVE))||FAILED(link->SetIconLocation(executable,0))||FAILED(link->SetDescription(L"Xiaoma Brightness · Start silently in the tray at sign-in")))return false;
         return SUCCEEDED(file->Save(shortcut.c_str(),TRUE));
     }();
     if(SUCCEEDED(initialized))CoUninitialize();

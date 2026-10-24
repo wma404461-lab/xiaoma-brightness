@@ -35,7 +35,7 @@ DWORD NativeRaw(const Display& display, int percent) {
 }
 int ClampPercent(int value, Backend backend) { return std::clamp(value, backend == Backend::Soft ? 5 : 0, 100); }
 std::wstring BackendName(Backend backend) {
-    switch (backend) { case Backend::Vcp: return L"DDC/CI"; case Backend::HighLevel: return L"Monitor API"; case Backend::Wmi: return L"WMI"; default: return L"画面调暗"; }
+    switch (backend) { case Backend::Vcp: return L"DDC/CI"; case Backend::HighLevel: return L"Monitor API"; case Backend::Wmi: return L"WMI"; default: return L"Software dimming"; }
 }
 template<class T> void Release(T*& value) { if (value) { value->Release(); value = nullptr; } }
 struct WmiDisplay { std::wstring instance, path; int brightness = 100; std::vector<DWORD> levels; };
@@ -187,7 +187,7 @@ Displays DisplayControl::Scan() {
         std::wstring name = identity != identities.end() ? identity->second.name : L"";
         std::wstring key = identity != identities.end() ? identity->second.key : info.szDevice;
         if (key.empty()) key = info.szDevice;
-        if (name.empty()) name = L"显示器";
+        if (name.empty()) name = L"Display";
         DWORD physicalCount = 0;
         std::vector<PHYSICAL_MONITOR> physical;
         BOOL numberOK = GetNumberOfPhysicalMonitorsFromHMONITOR(handle, &physicalCount);

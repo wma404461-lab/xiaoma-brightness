@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 32 32">
-  <title>小马亮度 — 托盘马与屏幕</title>
+  <title>Xiaoma Brightness — Tray horse and display</title>
   <g id="mark" fill="#FFFFFF">
     <path id="monitor" fill-rule="evenodd" d="M4 5H28A2 2 0 0 1 30 7V23A2 2 0 0 1 28 25H4A2 2 0 0 1 2 23V7A2 2 0 0 1 4 5ZM4 7V23H28V7Z"/>
     <path id="stand" d="M14 24H18V27H22V29H10V27H14Z"/>
